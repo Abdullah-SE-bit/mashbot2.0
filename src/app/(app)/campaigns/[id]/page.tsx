@@ -55,7 +55,7 @@ export default async function CampaignDetailPage({
             <ActionButton
               variant="danger"
               confirmMessage="Delete this campaign and all of its content?"
-              action={() => deleteCampaign(campaign.id)}
+              action={deleteCampaign.bind(null, campaign.id)}
             >
               Delete campaign
             </ActionButton>

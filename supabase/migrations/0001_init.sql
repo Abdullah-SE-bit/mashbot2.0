@@ -204,10 +204,21 @@ create policy campaign_content_insert_contributor on public.campaign_content
     and (public.has_role('contributor') or public.is_admin())
   );
 
+-- Note: UPDATE policies without an explicit WITH CHECK reuse USING to validate the
+-- resulting row too. Restricting USING to status in ('draft', 'rejected') would then
+-- also block the update that moves a row *out* of that status (e.g. Contributor
+-- submitting for approval), because the new row no longer satisfies it. WITH CHECK is
+-- given separately so the old-row precondition doesn't also apply to the new row.
 create policy campaign_content_update_workflow on public.campaign_content
   for update using (
     public.is_admin()
     or (created_by = auth.uid() and status in ('draft', 'rejected'))
+    or public.has_role('approver')
+    or public.has_role('publisher')
+  )
+  with check (
+    public.is_admin()
+    or created_by = auth.uid()
     or public.has_role('approver')
     or public.has_role('publisher')
   );

@@ -76,18 +76,18 @@ export default async function AdminUsersPage() {
                   {profile.account_type !== "admin" && (
                     <div className="flex gap-2">
                       {profile.status === "active" ? (
-                        <ActionButton action={() => deactivateUser(profile.id)}>
+                        <ActionButton action={deactivateUser.bind(null, profile.id)}>
                           Deactivate
                         </ActionButton>
                       ) : (
-                        <ActionButton action={() => reactivateUser(profile.id)}>
+                        <ActionButton action={reactivateUser.bind(null, profile.id)}>
                           Reactivate
                         </ActionButton>
                       )}
                       <ActionButton
                         variant="danger"
                         confirmMessage="Delete this account? Only possible if it has no history."
-                        action={() => deleteUser(profile.id)}
+                        action={deleteUser.bind(null, profile.id)}
                       >
                         Delete
                       </ActionButton>

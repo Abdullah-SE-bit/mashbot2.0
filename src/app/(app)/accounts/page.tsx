@@ -45,7 +45,7 @@ export default async function AccountsPage() {
                 {account.status}
               </span>
               {account.status === "connected" && (
-                <ActionButton action={() => disconnectExternalAccount(account.id)}>
+                <ActionButton action={disconnectExternalAccount.bind(null, account.id)}>
                   Disconnect
                 </ActionButton>
               )}
